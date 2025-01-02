@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import com.ecommerce.minimart.domain.CategoryRepository;
 import com.ecommerce.minimart.domain.Product;
 import com.ecommerce.minimart.domain.ProductRepository;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,9 @@ public class ProductController {
     @Autowired
     private ProductRepository prepository;
 
+    @Autowired
+    private CategoryRepository crepository;
+
     @GetMapping("/products")
     public String getAllProducts(Model model) {
         model.addAttribute("products", prepository.findAll());
@@ -24,6 +28,7 @@ public class ProductController {
     @GetMapping("/products/add")
     public String showCreateProductForm(Model model) {
         model.addAttribute("product", new Product());
+        model.addAttribute("categories", crepository.findAll());
         return "product_form";
     }
 
@@ -33,10 +38,10 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/products/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long productId) {
         prepository.deleteById(productId);
-        return "redirect:../products";
+        return "redirect:/products";
     }
 
     @GetMapping("/products/edit/{id}")
@@ -45,6 +50,7 @@ public class ProductController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product id"));
 
         model.addAttribute("product", product);
+        model.addAttribute("categories", crepository.findAll());
         return "edit_product";
     }
 
