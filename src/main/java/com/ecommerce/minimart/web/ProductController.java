@@ -3,11 +3,13 @@ package com.ecommerce.minimart.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.ecommerce.minimart.domain.CategoryRepository;
 import com.ecommerce.minimart.domain.Product;
 import com.ecommerce.minimart.domain.ProductRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -33,7 +35,11 @@ public class ProductController {
     }
 
     @PostMapping("/products/add")
-    public String createProduct(Product product) {
+    public String createProduct(@Valid Product product, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", crepository.findAll());
+            return "product_form";
+        }
         prepository.save(product);
         return "redirect:/products";
     }
@@ -55,7 +61,11 @@ public class ProductController {
     }
 
     @PostMapping("/products/edit/{id}")
-    public String editProduct(Product product) {
+    public String editProduct(@Valid Product product, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", crepository.findAll());
+            return "edit_product";
+        }
         prepository.save(product);
         return "redirect:/products";
     }

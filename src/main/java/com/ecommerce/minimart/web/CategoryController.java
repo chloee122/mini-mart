@@ -4,12 +4,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.ecommerce.minimart.domain.Category;
 import com.ecommerce.minimart.domain.CategoryRepository;
 import com.ecommerce.minimart.domain.Product;
 import com.ecommerce.minimart.domain.ProductRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,7 +36,10 @@ public class CategoryController {
     }
 
     @PostMapping("/categories/add")
-    public String createCategory(Category category) {
+    public String createCategory(@Valid Category category, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "category_form";
+        }
         crepository.save(category);
         return "redirect:/categories";
     }
@@ -49,7 +54,10 @@ public class CategoryController {
     }
 
     @PostMapping("/categories/edit/{id}")
-    public String editCategory(Category category) {
+    public String editCategory(@Valid Category category, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "edit_category";
+        }
         crepository.save(category);
         return "redirect:/categories";
     }

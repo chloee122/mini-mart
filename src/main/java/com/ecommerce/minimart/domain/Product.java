@@ -6,16 +6,33 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name, description;
+
+    @NotBlank
+    @Size(max = 100)
+    private String name;
+
+    @NotBlank
+    @Size(max = 200)
+    private String description;
+
+    @Positive
     private double price;
+
+    @PositiveOrZero
     private int stock;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;

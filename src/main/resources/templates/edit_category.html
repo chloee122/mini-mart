@@ -31,8 +31,22 @@
         <input type="hidden" th:field="*{categoryId}" />
         <label for="name"> Category name </label>
         <input type="text" id="name" th:field="*{name}" />
+        <span
+          th:if="${#fields.hasErrors('name')}"
+          th:errors="*{name}"
+          class="text-danger"
+        >
+          Error
+        </span>
         <label for="description"> Description </label>
         <input type="text" id="description" th:field="*{description}" />
+        <span
+          th:if="${#fields.hasErrors('description')}"
+          th:errors="*{description}"
+          class="text-danger"
+        >
+          Error
+        </span>
         <input type="submit" value="Submit" />
       </form>
     </div>

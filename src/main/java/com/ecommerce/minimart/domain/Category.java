@@ -8,13 +8,21 @@ import jakarta.persistence.GenerationType;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long categoryId;
+
+    @NotBlank
+    @Size(max = 100)
     private String name;
+
+    @NotBlank
+    @Size(max = 200)
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
