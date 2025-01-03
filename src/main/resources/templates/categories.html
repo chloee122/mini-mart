@@ -22,42 +22,79 @@
         </nav>
       </div>
       <h2>Categories</h2>
-      <a href="/categories/add" class="btn btn-success">Add Categories</a>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="category: ${categories}">
-            <td th:text="${category.name}"></td>
-            <td th:text="${category.description}"></td>
-            <td>
-              <a
-                th:href="@{/categories/edit/{id}(id=${category.categoryId})}"
-                class="btn btn-primary"
-                >Edit</a
-              >
-            </td>
-            <td>
-              <a
-                th:href="@{/categories/delete/{id}(id=${category.categoryId})}"
-                class="btn btn-danger"
-                >Delete</a
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Display message on error/success -->
+      <div
+        th:if="${errorMessage}"
+        class="alert alert-danger alert-dismissible fade show"
+        id="errorMessage"
+      >
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          onclick="closeMessage('errorMessage')"
+        ></button>
+        <p th:text="${errorMessage}" class="mb-0"></p>
+      </div>
+      <div
+        th:if="${successMessage}"
+        class="alert alert-success alert-dismissible fade show"
+        id="successMessage"
+      >
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          onclick="closeMessage('successMessage')"
+        ></button>
+        <p th:text="${successMessage}" class="mb-0"></p>
+      </div>
+      <!-- Category table -->
+      <div class="w-75 mx-auto">
+        <div class="d-flex justify-content-end mb-3">
+          <a href="/categories/add" class="btn btn-success">Add Category</a>
+        </div>
+        <table class="table table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="category: ${categories}">
+              <td th:text="${category.name}"></td>
+              <td th:text="${category.description}"></td>
+              <td>
+                <a
+                  th:href="@{/categories/edit/{id}(id=${category.categoryId})}"
+                  class="btn btn-primary"
+                  >Edit</a
+                >
+              </td>
+              <td>
+                <a
+                  th:href="@{/categories/delete/{id}(id=${category.categoryId})}"
+                  class="btn btn-danger"
+                  >Delete</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
       crossorigin="anonymous"
     ></script>
+    <script>
+      function closeMessage(messageId) {
+        document.getElementById(messageId).style.display = "none";
+      }
+    </script>
   </body>
 </html>
