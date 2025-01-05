@@ -1,5 +1,7 @@
 package com.ecommerce.minimart.web;
 
+import java.io.IOException;
+import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,8 @@ import com.ecommerce.minimart.domain.Product;
 import com.ecommerce.minimart.domain.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -35,11 +39,19 @@ public class ProductController {
     }
 
     @PostMapping("/products/add")
-    public String createProduct(@Valid Product product, BindingResult bindingResult, Model model) {
+    public String createProduct(@Valid Product product, BindingResult bindingResult, Model model,
+            @RequestParam("file") MultipartFile imageFile) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", crepository.findAll());
             return "product_form";
         }
+
+        try {
+            product.setImage(Base64.getEncoder().encodeToString(imageFile.getBytes()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         prepository.save(product);
         return "redirect:/products";
     }
