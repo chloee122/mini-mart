@@ -98,4 +98,13 @@ public class ProductController {
         prepository.save(product);
         return "redirect:/products";
     }
+
+    @GetMapping("/products/{id}")
+    public String getAProduct(@PathVariable("id") Long productId, Model model) {
+        Product product = prepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product id"));
+
+        model.addAttribute("product", product);
+        return "product";
+    }
 }

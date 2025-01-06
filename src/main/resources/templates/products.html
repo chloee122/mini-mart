@@ -40,6 +40,11 @@
                 </p>
                 <p th:text="'EUR '+ ${product.price}"></p>
                 <a
+                  th:href="@{/products/{id}(id=${product.id})}"
+                  class="btn btn-secondary"
+                  >View</a
+                >
+                <a
                   th:href="@{/products/edit/{id}(id=${product.id})}"
                   class="btn btn-primary"
                   >Edit</a
