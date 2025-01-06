@@ -21,68 +21,98 @@
           </ul>
         </nav>
       </div>
-      <h2>Add Product</h2>
       <form
         action="#"
         th:action="@{/products/add}"
         th:object="${product}"
         method="post"
         enctype="multipart/form-data"
+        class="w-50 mt-4 mx-auto"
       >
-        <label for="name"> Product name </label>
-        <input type="text" id="name" th:field="*{name}" />
-        <span
-          th:if="${#fields.hasErrors('name')}"
-          th:errors="*{name}"
-          class="text-danger"
-          >Error</span
-        >
-        <label for="image"> Product image </label>
-        <input type="file" name="file" id="image" accept="" />
-        <label for="description"> Description </label>
-        <input
-          type="text"
-          id="description"
-          th:field="*{description}"
-          accept=".jpg, .jpeg"
-        />
-        <span
-          th:if="${#fields.hasErrors('description')}"
-          th:errors="*{description}"
-          class="text-danger"
-          >Error</span
-        >
-        <label for="price"> Price </label>
-        <input type="text" id="price" th:field="*{price}" />
-        <span
-          th:if="${#fields.hasErrors('price')}"
-          th:errors="*{price}"
-          class="text-danger"
-          >Error</span
-        >
-        <label for="stock"> Stock </label>
-        <input type="number" id="stock" th:field="*{stock}" />
-        <span
-          th:if="${#fields.hasErrors('stock')}"
-          th:errors="*{stock}"
-          class="text-danger"
-          >Error</span
-        >
-        <label for="category"> Category</label>
-        <select id="category" th:field="*{category}">
-          <option
-            th:each="category:${categories}"
-            th:value="${category.categoryId}"
-            th:text="${category.name}"
-          ></option>
-        </select>
-        <span
-          th:if="${#fields.hasErrors('category')}"
-          th:errors="*{category}"
-          class="text-danger"
-          >Error</span
-        >
-        <input type="submit" value="Submit" />
+        <h3>ADD PRODUCT</h3>
+        <div class="mb-3">
+          <label for="name" class="form-label">Product name</label>
+          <input
+            type="text"
+            id="name"
+            th:field="*{name}"
+            class="form-control"
+          />
+          <span
+            th:if="${#fields.hasErrors('name')}"
+            th:errors="*{name}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Product image</label>
+          <input
+            type="file"
+            name="file"
+            id="image"
+            accept=".jpg, .jpeg"
+            class="form-control"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input
+            type="text"
+            id="description"
+            th:field="*{description}"
+            class="form-control"
+          />
+          <span
+            th:if="${#fields.hasErrors('description')}"
+            th:errors="*{description}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="form-label">Price</label>
+          <input
+            type="text"
+            id="price"
+            th:field="*{price}"
+            class="form-control"
+          />
+          <span
+            th:if="${#fields.hasErrors('price')}"
+            th:errors="*{price}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <div class="mb-3">
+          <label for="stock" class="form-label">Stock</label>
+          <input
+            type="number"
+            id="stock"
+            th:field="*{stock}"
+            class="form-control"
+          />
+          <span
+            th:if="${#fields.hasErrors('stock')}"
+            th:errors="*{stock}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <div class="mb-3">
+          <label for="category" class="form-label">Category</label>
+          <select id="category" th:field="*{category}" class="form-select">
+            <option value="" disabled selected>Select category</option>
+            <option
+              th:each="category : ${categories}"
+              th:value="${category.categoryId}"
+              th:text="${category.name}"
+            ></option>
+          </select>
+          <span
+            th:if="${#fields.hasErrors('category')}"
+            th:errors="*{category}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
     <script

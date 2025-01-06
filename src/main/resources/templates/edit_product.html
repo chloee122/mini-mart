@@ -21,61 +21,123 @@
           </ul>
         </nav>
       </div>
-      <h2>Edit Product</h2>
       <form
         action="#"
         th:action="@{/products/edit/{id}(id = ${product.id})}"
         th:object="${product}"
         method="post"
+        class="w-50 mt-4 mx-auto mb-5"
+        enctype="multipart/form-data"
       >
+        <h3>EDIT PRODUCT</h3>
         <input type="hidden" th:field="*{id}" />
-        <label for="name"> Product name </label>
-        <input type="text" id="name" th:field="*{name}" />
-        <span
-          th:if="${#fields.hasErrors('name')}"
-          th:errors="*{name}"
-          class="text-danger"
-          >Error</span
-        >
-        <label for="description"> Description </label>
-        <input type="text" id="description" th:field="*{description}" />
-        <span
-          th:if="${#fields.hasErrors('description')}"
-          th:errors="*{description}"
-          class="text-danger"
-          >Error</span
-        >
-        <label for="price"> Price </label>
-        <input type="text" id="price" th:field="*{price}" />
-        <span
-          th:if="${#fields.hasErrors('price')}"
-          th:errors="*{price}"
-          class="text-danger"
-          >Error</span
-        >
-        <label for="stock"> Stock </label>
-        <input type="number" id="stock" th:field="*{stock}" />
-        <span
-          th:if="${#fields.hasErrors('stock')}"
-          th:errors="*{stock}"
-          class="text-danger"
-          >Error</span
-        >
-        <label for="category">Category</label>
-        <select id="category" th:field="*{category}">
-          <option
-            th:each="category:${categories}"
-            th:value="${category.categoryId}"
-            th:text="${category.name}"
-          ></option>
-        </select>
-        <span
-          th:if="${#fields.hasErrors('category')}"
-          th:errors="*{category}"
-          class="text-danger"
-          >Error</span
-        >
-        <input type="submit" value="Submit" />
+        <div class="mb-3">
+          <label for="name" class="form-label"> Product name </label>
+          <input
+            type="text"
+            id="name"
+            th:field="*{name}"
+            class="form-control"
+          />
+          <span
+            th:if="${#fields.hasErrors('name')}"
+            th:errors="*{name}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Product image</label>
+          <input
+            type="file"
+            name="file"
+            id="image"
+            accept=".jpg, .jpeg"
+            class="form-control"
+          />
+          <div class="mt-3">
+            <img
+              th:if="${product.image != null}"
+              th:src="'data:image/jpg;base64,' + ${product.image}"
+              alt="Product Image"
+              id="product-img"
+              style="max-width: 200px; max-height: 200px"
+            />
+            <div th:if="${product.image != null}" class="mt-1">
+              <input
+                type="hidden"
+                name="deleteImage"
+                id="deleteImageField"
+                value="false"
+              />
+              <button
+                type="submit"
+                name="deleteImage"
+                id="delete-img-btn"
+                value="true"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="description"> Description </label>
+          <input
+            type="text"
+            id="description"
+            th:field="*{description}"
+            class="form-control"
+          />
+          <span
+            th:if="${#fields.hasErrors('description')}"
+            th:errors="*{description}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="form-label"> Price </label>
+          <input
+            type="text"
+            id="price"
+            th:field="*{price}"
+            class="form-control"
+          />
+          <span
+            th:if="${#fields.hasErrors('price')}"
+            th:errors="*{price}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <div class="mb-3">
+          <label for="stock" class="form-label"> Stock </label>
+          <input
+            type="number"
+            id="stock"
+            th:field="*{stock}"
+            class="form-control"
+          />
+          <span
+            th:if="${#fields.hasErrors('stock')}"
+            th:errors="*{stock}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <div class="mb-3">
+          <label for="category" class="form-label">Category</label>
+          <select id="category" th:field="*{category}" class="form-control">
+            <option
+              th:each="category:${categories}"
+              th:value="${category.categoryId}"
+              th:text="${category.name}"
+            ></option>
+          </select>
+          <span
+            th:if="${#fields.hasErrors('category')}"
+            th:errors="*{category}"
+            class="text-danger small"
+          ></span>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit" />
       </form>
     </div>
     <script
@@ -83,5 +145,17 @@
       integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
       crossorigin="anonymous"
     ></script>
+    <script>
+      document
+        .getElementById("delete-img-btn")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          document.getElementById("deleteImageField").value = "true";
+          document
+            .getElementById("delete-img-btn")
+            .closest("div").style.display = "none";
+          document.getElementById("product-img").style.display = "none";
+        });
+    </script>
   </body>
 </html>

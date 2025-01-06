@@ -73,11 +73,28 @@ public class ProductController {
     }
 
     @PostMapping("/products/edit/{id}")
-    public String editProduct(@Valid Product product, BindingResult bindingResult, Model model) {
+    public String editProduct(@PathVariable("id") Long productId, @Valid Product product,
+            BindingResult bindingResult, Model model, @RequestParam("file") MultipartFile imageFile,
+            @RequestParam(value = "deleteImage", required = false) String deleteProductImage) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", crepository.findAll());
             return "edit_product";
         }
+
+        if (!imageFile.isEmpty()) {
+            try {
+                product.setImage(Base64.getEncoder().encodeToString(imageFile.getBytes()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if ("true".equals(deleteProductImage)) {
+            product.setImage(null);
+        } else {
+            Product existingProduct = prepository.findById(productId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid product id"));
+            product.setImage(existingProduct.getImage());
+        }
+
         prepository.save(product);
         return "redirect:/products";
     }
