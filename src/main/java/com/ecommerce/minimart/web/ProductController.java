@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import com.ecommerce.minimart.domain.Category;
 import com.ecommerce.minimart.domain.CategoryRepository;
 import com.ecommerce.minimart.domain.Product;
 import com.ecommerce.minimart.domain.ProductRepository;
@@ -26,8 +27,34 @@ public class ProductController {
     private CategoryRepository crepository;
 
     @GetMapping("/products")
-    public String getAllProducts(Model model) {
-        model.addAttribute("products", prepository.findAll());
+    public String getProducts(
+            @RequestParam(value = "category", required = false) String categoryName,
+            @RequestParam(value = "search", required = false) String keyword, Model model) {
+
+        Iterable<Product> products;
+
+        Category chosenCategory = categoryName != null && !categoryName.isEmpty()
+                ? crepository.findByName(categoryName)
+                : null;
+
+        String searchedKeyword = keyword != null && !keyword.isEmpty() ? keyword : null;
+
+        if (chosenCategory != null && searchedKeyword != null) {
+            products = prepository.findByCategoryAndNameContainingIgnoreCase(chosenCategory,
+                    searchedKeyword);
+        } else if (chosenCategory != null) {
+            products = prepository.findByCategory(chosenCategory);
+        } else if (searchedKeyword != null) {
+            products = prepository.findByNameContainingIgnoreCase(searchedKeyword);
+        } else {
+            products = prepository.findAll();
+        }
+
+        model.addAttribute("products", products);
+        model.addAttribute("categories", crepository.findAll());
+        model.addAttribute("categoryName", categoryName);
+        model.addAttribute("search", searchedKeyword);
+
         return "products";
     }
 
