@@ -3,6 +3,7 @@ package com.ecommerce.minimart.web;
 import java.io.IOException;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -58,6 +59,7 @@ public class ProductController {
         return "products";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/products/add")
     public String showCreateProductForm(Model model) {
         model.addAttribute("product", new Product());
@@ -65,6 +67,7 @@ public class ProductController {
         return "product_form";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/products/add")
     public String createProduct(@Valid Product product, BindingResult bindingResult, Model model,
             @RequestParam("file") MultipartFile imageFile) {
@@ -83,12 +86,14 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/products/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long productId) {
         prepository.deleteById(productId);
         return "redirect:/products";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/products/edit/{id}")
     public String showEditProductForm(@PathVariable("id") Long productId, Model model) {
         Product product = prepository.findById(productId)
@@ -99,6 +104,7 @@ public class ProductController {
         return "edit_product";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/products/edit/{id}")
     public String editProduct(@PathVariable("id") Long productId, @Valid Product product,
             BindingResult bindingResult, Model model, @RequestParam("file") MultipartFile imageFile,
