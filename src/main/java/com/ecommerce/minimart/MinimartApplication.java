@@ -25,9 +25,9 @@ public class MinimartApplication {
 
 			if (existingUser1 == null && existingUser2 == null) {
 
-				User user1 = new User("user",
+				User user1 = new User("user", "user@mail.com",
 						"$2a$10$yRU8kLR7BHLbgVO52ptyNeTtz0QpG3OQxo3Tot7qDkcUHsRJw2VmG", "USER");
-				User user2 = new User("admin",
+				User user2 = new User("admin", "admin@email.com",
 						"$2a$10$YV5IZp/H9.iz8YO9NYAoEOa1Rl8h2O.0odFFYCsCMt4aU3alpKJz2", "ADMIN");
 
 				urepository.save(user1);

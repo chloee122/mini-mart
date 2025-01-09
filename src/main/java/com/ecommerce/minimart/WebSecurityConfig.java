@@ -21,14 +21,14 @@ public class WebSecurityConfig {
         @Bean
         public SecurityFilterChain configure(HttpSecurity http) throws Exception {
                 http.authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("/css/**", "/h2-console/**").permitAll()
+                                .requestMatchers("/css/**", "/h2-console/**", "/signup").permitAll()
                                 .requestMatchers("/categories/**", "/products/add",
                                                 "/products/edit/**", "/products/delete/**")
                                 .hasAuthority("ADMIN").anyRequest().authenticated())
                                 .headers(headers -> headers.frameOptions(
                                                 frameOptions -> frameOptions.disable())) // For
                                                                                          // h2-console
-                                .formLogin(formLogin -> formLogin
+                                .formLogin(formLogin -> formLogin.loginPage("/login")
                                                 .defaultSuccessUrl("/products", true).permitAll())
                                 .logout(logout -> logout.permitAll()).csrf(csrf -> csrf.disable());;
                 return http.build();
